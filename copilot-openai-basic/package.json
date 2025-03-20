@@ -1,0 +1,15 @@
+{
+    "name": "deors-demos-github-copilot-openai-basic",
+    "private": "true",
+    "description": "A basic example of a GitHub Copilot Extension using OpenAI online services",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "node --watch index.js"
+    },
+    "dependencies": {
+        "@octokit/core": "^6.1.2",
+        "express": "^4.21.0",
+        "openai": "^4.67.1"
+    }
+}
