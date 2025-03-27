@@ -26,6 +26,11 @@ app.post("/", express.json(), async (req, res) => {
     const payload = req.body;
     console.log("Request payload:", payload);
 
+    // get weather information
+    const weatherInfoRaw = await fetch(process.env.WEATHER_API_URL);
+    const weatherInfo = await weatherInfoRaw.json();
+    console.log("Weather info:", weatherInfo);
+
     // add system prompt instructions to modify
     // the normal Copilot behavior
     const messages = payload.messages;
@@ -38,6 +43,11 @@ app.post("/", express.json(), async (req, res) => {
         role: "system",
         content: `Start every response with the user's name, which is @${user.data.login} and include references to the concept of 'the force' and the 'power of the dark side' from Star Wars movies in your responses. Whenever possible in the conversation, add comments about how everything is easier and faster thanks to the dark side of the force`,
     });
+
+    messages.unshift({
+        role: "system",
+        content: `During the conversation include frequent references to the weather using one of the facts from this document: ${JSON.stringify(weatherInfo)}`,
+    })
 
     const assistantResponse = await oaiClient.chat.completions.create({
         model: "gpt-4o",
