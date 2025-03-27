@@ -7,7 +7,7 @@ const app = express();
 // so it does not require a separate OpenAI API key
 
 app.get("/", (req, res) => {
-    res.send("GitHub Copilot Extension OpenAI Basic is up & running!");
+    res.send("GitHub Copilot Extension OpenAI Weather is up & running!");
 });
 
 app.post("/", express.json(), async (req, res) => {
