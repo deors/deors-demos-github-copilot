@@ -3,11 +3,11 @@ import express from "express";
 import OpenAI from 'openai';
 const app = express();
 
-// this example uses OpenAI gpt-4o model available through GitHub Copilot API
-// so it does not require a separate OpenAI API key
+// this example uses OpenAI gpt-4o model available through OpenAI directly
+// therefore it requires your own OpenAI API key
 
 app.get("/", (req, res) => {
-    res.send("GitHub Copilot Extension OpenAI Basic is up & running!");
+    res.send("GitHub Copilot Extension OpenAI YourKey is up & running!");
 });
 
 app.post("/", express.json(), async (req, res) => {
@@ -18,9 +18,11 @@ app.post("/", express.json(), async (req, res) => {
     const user = await octokit.request("GET /user");
     console.log("Incoming request from user:", user.data.login);
 
+    // when connecting to OpenAI API directly
+    // we cannot use the GitHub user token as the API key
+    // but your own API key configured in the environment
     const oaiClient = new OpenAI({
-        baseURL: "https://api.githubcopilot.com",
-        apiKey: userToken
+        apiKey: process.env.OPENAI_API_KEY,
     });
 
     const payload = req.body;
