@@ -12,12 +12,18 @@ Available in branch `01-copilot-openai-basic`.
 
 ## copilot-openai-weather
 
-Based on `copilot-openai-basic` but additionally this extension will add references to the weather obtained by consuming a third-party weather forecasting service configured with the environment variable WEATHER_API_URL. For example, in Spain you may use `https://www.el-tiempo.net/api/json/v2/home`.
+Based on `copilot-openai-basic` but additionally this extension will add references to the weather obtained by consuming a third-party weather forecasting service configured with the environment variable `WEATHER_API_URL`. For example, in Spain you may use `https://www.el-tiempo.net/api/json/v2/home`.
 
 Available in branch `02-copilot-openai-weather`.
 
 ## copilot-openai-apikey
 
-Same as `copilot-openai-weather` but using OpenAI API directly. Therefore, it requires your own OpenAI API key to work. To provide it, use the environment variable OPENAI_API_KEY when configuring the deployment.
+Same as `copilot-openai-weather` but using OpenAI API directly. Therefore, it requires your own OpenAI API key to work. To provide it, use the environment variable `OPENAI_API_KEY` when configuring the deployment.
 
 Available in branch `03-copilot-openai-apikey`.
+
+## copilot-aifoundry
+
+This extension will leverage an inference model deployed in Azure AI Foundry. To integrate with the right model three environment variables are required: `MODEL_API_KEY` is the model API key configured in AI Foundry, `MODEL_API_URL` is the URL to the endpoint where the model is published, and `MODEL_NAME` is the name of the model instance. As the integration is done through the `Model Client` Azure AI inference interface, the example should work with any model deployed in AI Foundry.
+
+Available in branch `04-copilot-aifoundry`.
