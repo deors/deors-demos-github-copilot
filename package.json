@@ -1,7 +1,7 @@
 {
-    "name": "deors-demos-github-copilot-openai-basic",
+    "name": "deors-demos-github-copilot-openai-yourkey",
     "private": "true",
-    "description": "A basic example of a GitHub Copilot Extension using OpenAI online services",
+    "description": "A basic example of a GitHub Copilot Extension using OpenAI online services through the public API and your own API key",
     "type": "module",
     "scripts": {
         "start": "node index.js",
