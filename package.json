@@ -1,15 +1,15 @@
 {
-    "name": "deors-demos-github-copilot-openai-basic",
+    "name": "deors-demos-github-copilot-aifoundry",
     "private": "true",
-    "description": "A basic example of a GitHub Copilot Extension using OpenAI online services",
+    "description": "A basic example of a GitHub Copilot Extension using a model deployed in Azure AI Foundry",
     "type": "module",
     "scripts": {
         "start": "node index.js",
         "dev": "node --watch index.js"
     },
     "dependencies": {
-        "@octokit/core": "^6.1.2",
         "express": "^4.21.0",
-        "openai": "^4.67.1"
+        "node-fetch": "^2.6.1",
+        "uuid": "^9.0.0"    
     }
 }

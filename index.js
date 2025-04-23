@@ -1,74 +1,80 @@
-import { Octokit } from "@octokit/core";
 import express from "express";
-import OpenAI from 'openai';
+import fetch from "node-fetch";
+import { processMessages, processResponseText } from "./helpers.js";
+
 const app = express();
 
-// this example uses OpenAI gpt-4o model available through OpenAI directly
-// therefore it requires your own OpenAI API key
+// this example uses any model deployed to Azure AI Foundry
+// therefore it requires the model name, API URL and API key
 
 app.get("/", (req, res) => {
-    res.send("GitHub Copilot Extension OpenAI YourKey is up & running!");
+    res.send("GitHub Copilot Extension AI Foundry is up & running!");
 });
 
 app.post("/", express.json(), async (req, res) => {
 
-    // the user token is received as a request header
-    const userToken = req.get("X-GitHub-Token");
-    const octokit = new Octokit({ auth: userToken });
-    const user = await octokit.request("GET /user");
-    console.log("Incoming request from user:", user.data.login);
+    try {
+        const payload = req.body;
+        const messages = payload?.messages || [];
 
-    // when connecting to OpenAI API directly
-    // we cannot use the GitHub user token as the API key
-    // but your own API key configured in the environment
-    const oaiClient = new OpenAI({
-        apiKey: process.env.OPENAI_API_KEY,
-    });
+        if (!messages.length) {
+            return res.status(400).send("The request body does not contain a valid message");
+        }
 
-    const payload = req.body;
-    console.log("Request payload:", payload);
+        // validate that required environment variables are set
+        if (!process.env.MODEL_NAME
+            || !process.env.MODEL_API_KEY
+            || !process.env.MODEL_API_URL) {
+            return res.status(500).send("The required environment variables are missing");
+        }
 
-    // get weather information
-    const weatherInfoRaw = await fetch(process.env.WEATHER_API_URL);
-    const weatherInfo = await weatherInfoRaw.json();
-    console.log("Weather info:", weatherInfo);
+        // call the function to process the messages
+        const raw = processMessages(messages);
 
-    // add system prompt instructions to modify
-    // the normal Copilot behavior
-    const messages = payload.messages;
-    messages.unshift({
-        role: "system",
-        content: "You are a helpful assistant that replies to user messages as if you were Darth Vader character from Star Wars.",
-    });
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("azureml-model-deployment", process.env.MODEL_NAME);
+        myHeaders.append("Accept", "text/event-stream");
+        myHeaders.append("Authorization", "Bearer " + process.env.MODEL_API_KEY);
 
-    messages.unshift({
-        role: "system",
-        content: `Start every response with the user's name, which is @${user.data.login} and include references to the concept of 'the force' and the 'power of the dark side' from Star Wars movies in your responses. Whenever possible in the conversation, add comments about how everything is easier and faster thanks to the dark side of the force`,
-    });
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
 
-    messages.unshift({
-        role: "system",
-        content: `During the conversation include frequent references to the weather using one of the facts from this document: ${JSON.stringify(weatherInfo)}`,
-    })
+        // add headers for streaming response
+        res.setHeader("Content-Type", "text/event-stream");
+        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Connection", "keep-alive");
 
-    const assistantResponse = await oaiClient.chat.completions.create({
-        model: "gpt-4o",
-        messages,
-        stream: true,
-        temperature: 0.7,
-    });
-
-    // stream the response
-        for await (const chunk of assistantResponse) {
-        const chunkStr = "data: " + JSON.stringify(chunk) + "\n\n";
-        res.write(chunkStr);
+        // ask the model
+        fetch(process.env.MODEL_API_URL, requestOptions)
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Response received from the model");
+                    return response.text();
+                } else {
+                    console.error("Request failed with status code ", response.status);
+                    throw new Error("Request failed with status code " + response.status);
+                }
+            })
+            .then((text) => {
+                processResponseText(text, res, false);
+            })
+            .catch((error) => {
+                console.error("Fetch error: ", error);
+                res.status(500).send("Fetch error while processing the request");
+            });
+    } catch (error) {
+        console.error("Internal error: ", error);
+        res.status(500).send("Internal error while processing the request");
     }
-    res.write("data: [DONE]\n\n");
-    res.end();
-    return;
-})
+});
 
-const port = Number(process.env.PORT || '8765')
+const port = Number(process.env.PORT || '8765');
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });
