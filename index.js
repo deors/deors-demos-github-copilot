@@ -56,7 +56,7 @@ app.post("/", express.json(), async (req, res) => {
                     console.log("Response received from the model");
                     return response.text();
                 } else {
-                    console.error("Request failed with status code ", response.status);
+                    console.error("Request failed with status code", response.status);
                     throw new Error("Request failed with status code " + response.status);
                 }
             })
@@ -64,11 +64,11 @@ app.post("/", express.json(), async (req, res) => {
                 processResponseText(text, res, false);
             })
             .catch((error) => {
-                console.error("Fetch error: ", error);
+                console.error("Fetch error:", error);
                 res.status(500).send("Fetch error while processing the request");
             });
     } catch (error) {
-        console.error("Internal error: ", error);
+        console.error("Internal error:", error);
         res.status(500).send("Internal error while processing the request");
     }
 });
