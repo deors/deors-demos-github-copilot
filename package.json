@@ -1,7 +1,7 @@
 {
     "name": "deors-demos-github-copilot-openai-weather",
     "private": "true",
-    "description": "A basic example of a GitHub Copilot Extension using OpenAI online services and a third-party weather service to enrich responses",
+    "description": "A basic example of a GitHub Copilot Extension customizing the behavior of the OpenAI model exposed thru GitHub Copilot API and using a third-party weather service to enrich the responses",
     "type": "module",
     "scripts": {
         "start": "node index.js",
