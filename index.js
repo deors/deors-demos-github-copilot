@@ -1,6 +1,7 @@
 import { Octokit } from "@octokit/core";
 import express from "express";
 import OpenAI from 'openai';
+
 const app = express();
 
 // this example uses OpenAI gpt-4o model available through OpenAI directly
@@ -66,9 +67,10 @@ app.post("/", express.json(), async (req, res) => {
     res.write("data: [DONE]\n\n");
     res.end();
     return;
-})
+});
 
-const port = Number(process.env.PORT || '8765')
+const port = Number(process.env.PORT || '8765');
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });
