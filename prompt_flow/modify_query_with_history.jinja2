@@ -1,0 +1,18 @@
+system: 
+* Given the following conversation history and the users next question,rephrase the question to be a stand alone question.
+If the conversation is irrelevant or empty, just restate the original question.
+If the files are empty or not relevant to the conversation, just ignore them and restate the original question.
+Do not add more details than necessary to the question.
+
+Chat history: 
+{% for item in chat_history %} 
+user: 
+{{ item.inputs.chat_input }}
+assistant: 
+{{ item.outputs.chat_output }} 
+{% endfor %}
+
+Files: {{ chat_files }}
+
+Follow up Input: {{ chat_input }} 
+Standalone Question:
