@@ -9,7 +9,7 @@ const app = express();
 // therefore it requires the API URL and API key where the model is deployed
 
 app.get("/", (req, res) => {
-    res.send("GitHub Copilot Extension AI Foundry + Prompt flow is up & running!");
+    res.send("GitHub Copilot Extension AI Foundry with Prompt flow is up & running!");
 });
 
 app.post("/", express.json(), async (req, res) => {
