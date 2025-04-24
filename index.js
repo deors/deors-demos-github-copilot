@@ -5,10 +5,11 @@ import { processMessages, processResponseText } from "./helpers.js";
 const app = express();
 
 // this example uses any model deployed to Azure AI Foundry
+// and Prompt flow to define the agent's behavior
 // therefore it requires the model name, API URL and API key
 
 app.get("/", (req, res) => {
-    res.send("GitHub Copilot Extension AI Foundry is up & running!");
+    res.send("GitHub Copilot Extension AI Foundry + Prompt flow is up & running!");
 });
 
 app.post("/", express.json(), async (req, res) => {
@@ -56,19 +57,19 @@ app.post("/", express.json(), async (req, res) => {
                     console.log("Response received from the model");
                     return response.text();
                 } else {
-                    console.error("Request failed with status code", response.status);
-                    throw new Error("Request failed with status code " + response.status);
+                    console.error(`Request failed with status code ${response.status}`);
+                    throw new Error(`Request failed with status code ${response.status}`);
                 }
             })
             .then((text) => {
                 processResponseText(text, res, false);
             })
             .catch((error) => {
-                console.error("Fetch error:", error);
+                console.error(`Fetch error while processing the request: ${error}`);
                 res.status(500).send("Fetch error while processing the request");
             });
     } catch (error) {
-        console.error("Internal error:", error);
+        console.error(`Internal error while processing the request ${error}`);
         res.status(500).send("Internal error while processing the request");
     }
 });

@@ -1,7 +1,7 @@
 {
-    "name": "deors-demos-github-copilot-aifoundry",
+    "name": "deors-demos-github-copilot-aifoundry-promptflow",
     "private": "true",
-    "description": "A basic example of a GitHub Copilot Extension using a model deployed in Azure AI Foundry",
+    "description": "A basic example of a GitHub Copilot Extension using a model deployed in Azure AI Foundry + Prompt flow",
     "type": "module",
     "scripts": {
         "start": "node index.js",
