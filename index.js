@@ -11,7 +11,7 @@ const app = express();
 // therefore it requires the model name, API URL and API key
 
 app.get("/", (req, res) => {
-    res.send("GitHub Copilot Extension AI Foundry is up & running!");
+    res.send("GitHub Copilot Extension AI Foundry with Model Client is up & running!");
 });
 
 app.post("/", express.json(), async (req, res) => {
