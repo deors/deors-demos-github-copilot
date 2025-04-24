@@ -22,8 +22,14 @@ Same as `copilot-openai-weather` but using OpenAI API directly. Therefore, it re
 
 Available in branch `03-copilot-openai-apikey`.
 
-## copilot-aifoundry
+## copilot-aifoundry-modelclient
 
 This extension will leverage an inference model deployed in Azure AI Foundry. To integrate with the right model three environment variables are required: `MODEL_API_KEY` is the model API key configured in AI Foundry, `MODEL_API_URL` is the URL to the endpoint where the model is published, and `MODEL_NAME` is the name of the model instance. As the integration is done through the `Model Client` Azure AI inference interface, the example should work with any model deployed in AI Foundry.
 
-Available in branch `04-copilot-aifoundry`.
+Available in branch `04-copilot-aifoundry-modelclient`.
+
+## copilot-aifoundry-promptflow
+
+This extension interacts with Azure AI Foundry Prompt flows. To integrate with the right flow three environment variables are required: `MODEL_API_KEY` is the model API key configured in AI Foundry, `MODEL_API_URL` is the URL to the endpoint where the model is published, and `MODEL_NAME` is the name of the model instance. The integration is done through direct REST API calls matching the expected parameters as defined in the Prompt flow. Therefore, although the example is quite generic it may need adjustments when different input/output interfaces are defined in the target Prompt flow.
+
+Available in branch `05-copilot-aifoundry-promptflow`.
