@@ -30,6 +30,6 @@ Available in branch `04-copilot-aifoundry-modelclient`.
 
 ## copilot-aifoundry-promptflow
 
-This extension interacts with Azure AI Foundry Prompt flows. To integrate with the right flow three environment variables are required: `MODEL_API_KEY` is the model API key configured in AI Foundry, `MODEL_API_URL` is the URL to the endpoint where the model is published, and `MODEL_NAME` is the name of the model instance. The integration is done through direct REST API calls matching the expected parameters as defined in the Prompt flow. Therefore, although the example is quite generic it may need adjustments when different input/output interfaces are defined in the target Prompt flow.
+This extension interacts with Azure AI Foundry models defined with Prompt flow. To integrate with the right flow two environment variables are required: `MODEL_API_KEY` is the model API key configured in AI Foundry, and `MODEL_API_URL` is the URL to the endpoint where the model is published. The integration is done through direct REST API calls matching the expected parameters defined in the Prompt flow. Therefore, although the example is quite generic, it may need adjustments when different inputs are expected by the target Prompt flow.
 
 Available in branch `05-copilot-aifoundry-promptflow`.
