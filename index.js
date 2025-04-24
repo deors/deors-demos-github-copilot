@@ -6,7 +6,7 @@ const app = express();
 
 // this example uses any model deployed to Azure AI Foundry
 // and Prompt flow to define the agent's behavior
-// therefore it requires the model name, API URL and API key
+// therefore it requires the API URL and API key where the model is deployed
 
 app.get("/", (req, res) => {
     res.send("GitHub Copilot Extension AI Foundry + Prompt flow is up & running!");
@@ -23,8 +23,7 @@ app.post("/", express.json(), async (req, res) => {
         }
 
         // validate that required environment variables are set
-        if (!process.env.MODEL_NAME
-            || !process.env.MODEL_API_KEY
+        if (!process.env.MODEL_API_KEY
             || !process.env.MODEL_API_URL) {
             return res.status(500).send("The required environment variables are missing");
         }
@@ -34,7 +33,6 @@ app.post("/", express.json(), async (req, res) => {
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("azureml-model-deployment", process.env.MODEL_NAME);
         myHeaders.append("Accept", "text/event-stream");
         myHeaders.append("Authorization", "Bearer " + process.env.MODEL_API_KEY);
 
